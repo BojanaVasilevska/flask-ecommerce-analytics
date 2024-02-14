@@ -1,12 +1,14 @@
 from flask import Flask, request, jsonify
-from pymongo import MongoClient
+from flask_pymongo import PyMongo
 from flask_sqlalchemy import SQLAlchemy
 import requests
+from jsonschema import ValidationError, validate
 
 
 app = Flask(__name__)
-mongo_client = MongoClient('mongodb://localhost:27017')
-mongo_db = mongo_client['users_vouchers']
+
+app.config["MONGO_URI"] = "mongodb://localhost:27017/users_vouchers" 
+mongo = PyMongo(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users_vouchers.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -99,15 +101,40 @@ def send_to_telegram(age_range, average_spending):
     if response.status_code != 200:
         print(f"Failed to send message to Telegram. Status code: {response.status_code}, Response: {response.text}")
 
+@app.route('/create_collection')
+def create_collection():
+    mongo.db.create_collection('mycollection')
+    return 'Collection created successfully!'
+
+
+user_spending_schema = {
+    "type": "object",
+    "properties": {
+        'user_id': {"type": "integer"},
+        'money_spent': {"type": "number"},
+        'year': {"type": "integer"}
+    },
+    "required": ["user_id", "money_spent", "year"]
+}
 
 @app.route('/write_to_mongodb', methods=['POST'])
 def write_to_mongodb():
-    data = request.get_json()
+    if request.method == 'POST':
+        data = request.get_json()
 
-    mongo_db.bonus_collection.insert_one(data)
+        try:
+            validate(instance=data, schema=user_spending_schema)
+        except ValidationError as e:
+            return jsonify({'message': f'Validation error: {str(e)}'}), 400
 
-    return jsonify({'message': 'Data written to MongoDB successfully.'}), 201
+        try:
+            mongo.db.user_spending.insert_one(data)
+            return jsonify({'message': 'Data written to MongoDB successfully.'}), 201
+        except Exception as e:
+            return jsonify({'message': f'Error writing to MongoDB: {str(e)}'}), 500
+    else:
+        return jsonify({'message': 'Method Not Allowed'}), 405
 
-
-if __name__ == '__main__':
+    
+if __name__ == '__main__':    
     app.run(debug=True)
