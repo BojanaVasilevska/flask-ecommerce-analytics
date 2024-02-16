@@ -12,7 +12,7 @@ This repository contains a Flask application designed to analyze user data, spec
 
    > SQL ORM: Flask-SQLalchemy
 
-   > Testing: PyTest
+   > Testing: PyTest :testy:
 
    > HTTP request: Flask-Requests 
 
