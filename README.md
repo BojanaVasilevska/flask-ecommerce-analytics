@@ -5,10 +5,10 @@ Integration with Flask-SQLalchemy, Flask-PyMongo,requests, jsonschema - jsonsche
 
 ## Extension:
 
-    NoSQL ORM: Flask-PyMongo
+   > NoSQL ORM: Flask-PyMongo
 
-    SQL ORM: Flask-SQLalchemy
+   > SQL ORM: Flask-SQLalchemy
 
-    Testing: PyTest
+   > Testing: PyTest
 
 Cerated by Bojana Vasinlevska. 😊
