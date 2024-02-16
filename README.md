@@ -8,11 +8,11 @@ This repository contains a Flask application designed to analyze user data, spec
 
 ## Extension:
 
-   > NoSQL ORM: Flask-PyMongo
+   > NoSQL ORM: Flask-PyMongo :database:
 
    > SQL ORM: Flask-SQLalchemy
 
-   > Testing: PyTest :testy:
+   > Testing: PyTest 🧪
 
    > HTTP request: Flask-Requests 
 
