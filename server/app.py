@@ -135,6 +135,22 @@ def write_to_mongodb():
     else:
         return jsonify({'message': 'Method Not Allowed'}), 405
 
+@app.route('/user_spending_records', methods=['GET'])
+def user_spending_records():
+    user_spending_data = list(mongo.db.user_spending.find())
+
+    if len(user_spending_data) == 0:
+        return jsonify({'message': 'No user spending records found.'}), 404
+
+    records = []
+    for record in user_spending_data:
+        records.append({
+            'user_id': record['user_id'],
+            'money_spent': record['money_spent'],
+            'year': record['year']
+        })
+
+    return jsonify({'user_spending_records': records})
     
 if __name__ == '__main__':    
     app.run(debug=True)
