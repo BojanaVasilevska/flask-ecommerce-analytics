@@ -11,4 +11,7 @@ Integration with Flask-SQLalchemy, Flask-PyMongo,requests, jsonschema - jsonsche
 
    > Testing: PyTest
 
+
+## Installation:
+
 Cerated by Bojana Vasinlevska. 😊
