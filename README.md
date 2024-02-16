@@ -8,15 +8,15 @@ This repository contains a Flask application designed to analyze user data, spec
 
 ## Extension:
 
-   > NoSQL ORM: Flask-PyMongo :database:
+   > :postbox: NoSQL ORM: Flask-PyMongo 
 
-   > SQL ORM: Flask-SQLalchemy
+   > :file_folder: SQL ORM: Flask-SQLalchemy 
 
-   > Testing: PyTest 🧪
+   > :chart_with_upwards_trend: Testing: PyTest
 
-   > HTTP request: Flask-Requests 
+   > :incoming_envelope: HTTP request: Flask-Requests 
 
-   > Validation Schema: jsonshcema
+   > :thumbsup: Validation Schema: jsonshcema
 
 
 ## Installation:
