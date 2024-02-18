@@ -25,4 +25,13 @@ Install venv on Unix/macOS:
 
 ```markdown
 $ python3 -m venv .venv
+```
+
+Install venv on Windows:
+```bash
+$ py -m venv .venv
+```
+
+
+Cerated by Bojana Vasinlevska. 😊
 
