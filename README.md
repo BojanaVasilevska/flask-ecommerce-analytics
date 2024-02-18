@@ -21,8 +21,13 @@ This repository contains a Flask application designed to analyze user data, spec
 
 ## Installation:
 
-Install venv on Linux:
+Install venv on Unix/macOS:
 
-`python3 -m venv .venv`
+`python3 -m venv .venv`   pip install -r requirements.txt
+
+Install venv on Windows:
+
+`py -m venv .venv`
+
 
 Cerated by Bojana Vasinlevska. 😊
