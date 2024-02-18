@@ -44,6 +44,11 @@ Activate venv on Unix/macOS:
 ```markdown
 $ source .venv/bin/activate
 ```
+Activate venv on Windows:
+
+```markdown
+$ .venv\Scripts\activate
+```
 
 
 Cerated by Bojana Vasinlevska. 😊
