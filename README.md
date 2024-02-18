@@ -55,6 +55,5 @@ $ .venv\Scripts\activate
 <br />
 <br />
 
-$${\color{steelblue}Cerated \space by \space Bojana \space Vasinlevska.}$$ 
-                                                    😊
+$${\color{steelblue}Cerated \space by \space Bojana \space Vasinlevska. \space 😊}$$
 
