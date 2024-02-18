@@ -23,6 +23,6 @@ This repository contains a Flask application designed to analyze user data, spec
 
 Install venv on Linux:
 
-`code`python3 -m venv .venv
+`python3 -m venv .venv`
 
 Cerated by Bojana Vasinlevska. 😊
