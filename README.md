@@ -53,5 +53,5 @@ $ .venv\Scripts\activate
 ```
 
 
-Cerated by Bojana Vasinlevska. 😊
+$${\color{steelblue}Cerated \space by \space Bojana \space Vasinlevska.}$$ 😊
 
