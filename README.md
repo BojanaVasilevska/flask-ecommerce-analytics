@@ -1,4 +1,4 @@
-# <span style="color: steelblue">Flask Ecommerce Analytics</span>
+# <span color="#27abba">Flask Ecommerce Analytics</span>
 
 ![image](https://www.educative.io/v2api/editorpage/6196871006519296/image/6316021754363904)
 
