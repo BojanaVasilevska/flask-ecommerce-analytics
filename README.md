@@ -23,7 +23,8 @@ This repository contains a Flask application designed to analyze user data, spec
 
 Install venv on Unix/macOS:
 
-$ python3 -m venv .venv
+```bash
+$ your_terminal_command_here
 
 Install venv on Windows:
 
