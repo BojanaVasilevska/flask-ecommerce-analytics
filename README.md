@@ -37,7 +37,7 @@ $ py -m venv .venv
 ```
 ### Activate a virtual environment
 
-#### Before you can start installing or using packages in your virtual environment you’ll need to activate it. Activating a virtual environment will put the virtual environment-specific python and pip executables into your shell’s PATH.
+#### Before you can start installing or using packages in your virtual environment you’ll need to `activate` it. Activating a virtual environment will put the virtual environment-specific `python` and `pip` executables into your shell’s `PATH`.
 
 Activate venv on Unix/macOS:
 
