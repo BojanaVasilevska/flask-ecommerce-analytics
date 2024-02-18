@@ -1,4 +1,4 @@
-# $${\color{steelblue}Flask/Ecommerce/Analytics}$$
+# $${\color{steelblue}Flask \space Ecommerce\space Analytics}$$
 
 ![image](https://www.educative.io/v2api/editorpage/6196871006519296/image/6316021754363904)
 
