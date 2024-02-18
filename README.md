@@ -22,6 +22,7 @@ This repository contains a Flask application designed to analyze user data, spec
 
 ## Installation:
 
+### Create a new virtual environment
 
 Create a virtual environment, go to the project’s directory and run the following command - venv on Unix/macOS:
 
