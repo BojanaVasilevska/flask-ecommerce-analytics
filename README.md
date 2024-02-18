@@ -1,5 +1,7 @@
 # flask-ecommerce-analytics
 
+![image](https://www.educative.io/v2api/editorpage/6196871006519296/image/6316021754363904)
+
 ## Introduction: 
 
 This repository contains a Flask application designed to analyze user data, specifically focusing on orders and payments within an e-commerce platform.
