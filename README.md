@@ -1,4 +1,4 @@
-# <span fill="red">Flask Ecommerce Analytics</span>
+# $${\color{red}Flask Ecommerce Analytics}$$
 
 ![image](https://www.educative.io/v2api/editorpage/6196871006519296/image/6316021754363904)
 
