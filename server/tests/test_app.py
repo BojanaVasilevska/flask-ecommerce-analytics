@@ -3,7 +3,7 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import pytest
-from app import app, db, UserInfo, UserSpending
+from app import app, db, mongo, UserInfo, UserSpending
 
 @pytest.fixture
 def client():
@@ -68,3 +68,26 @@ def test_write_to_mongodb(client):
 
     response = client.post('/write_to_mongodb', json=data)
     assert response.status_code == 201
+
+def test_user_spending_records(client):
+    response = client.get('/user_spending_records')
+    assert response.status_code == 404
+    assert b"No user spending records found." in response.data
+
+    mock_data = [
+        {"user_id": 1, "money_spent": 100, "year": 2023},
+        {"user_id": 2, "money_spent": 200, "year": 2023}
+    ]
+    mongo.db.user_spending.insert_many(mock_data)
+
+    response = client.get('/user_spending_records')
+    assert response.status_code == 200
+
+    expected_response = {
+        "user_spending_records": [
+            {"user_id": 1, "money_spent": 100, "year": 2023},
+            {"user_id": 2, "money_spent": 200, "year": 2023}
+        ]
+    }
+    assert response.json == expected_response
+
