@@ -73,7 +73,7 @@ $ pip install Flask
 ```
 
 ```markdown
-$  pip install Flask-PyMongo
+$ pip install Flask-PyMongo
 ```
 
 ```markdown
