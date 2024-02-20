@@ -52,6 +52,21 @@ Activate venv on Windows:
 $ .venv\Scripts\activate
 ```
 
+### Install pip
+
+#### Install and update packages into a virtual environment.
+
+Install on Unix/macOS:
+
+```markdown
+$ python3 -m pip install --upgrade pip
+```
+Install on Windows:
+
+```markdown
+$ py -m pip install --upgrade pip
+```
+
 <br />
 <br />
 
