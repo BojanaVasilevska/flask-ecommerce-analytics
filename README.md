@@ -66,6 +66,31 @@ Install on Windows:
 ```markdown
 $ py -m pip install --upgrade pip
 ```
+### Install pip packages from local archives:
+
+```markdown
+$ pip install Flask
+```
+
+```markdown
+$  pip install Flask-PyMongo
+```
+
+```markdown
+$ pip install -U Flask-SQLAlchemy
+```
+
+```markdown
+$ pip install flask-requests
+```
+
+```markdown
+$ pip install pytest-flask
+```
+
+```markdown
+$ pip install jsonschema
+```
 
 <br />
 <br />
