@@ -3,6 +3,8 @@ from flask_pymongo import PyMongo
 from flask_sqlalchemy import SQLAlchemy
 import requests
 from jsonschema import ValidationError, validate
+from dotenv import load_dotenv
+import os
 
 
 app = Flask(__name__)
@@ -151,6 +153,27 @@ def user_spending_records():
         })
 
     return jsonify({'user_spending_records': records})
+
+load_dotenv()
+def get_github_user_data(username):
+    github_api_url = f"https://api.github.com/users/{username}"
+    headers = {'Authorization': f'token {os.getenv("GITHUB_TOKEN")}'}
+    response = requests.get(github_api_url, headers=headers)
+    if response.status_code == 200:
+        user_data = response.json()
+        return user_data
+    else:
+        return None
+
+@app.route('/github_user_data', methods=['GET'])
+def github_user_data():
+    github_username = 'bojanavasilevska'
+    user_data = get_github_user_data(github_username)
+    if user_data:
+        return jsonify({'github_user_data': user_data}), 200
+    else:
+        return jsonify({'message': 'Failed to fetch GitHub user data.'}), 404
+    
     
 if __name__ == '__main__':    
     app.run(debug=True)
