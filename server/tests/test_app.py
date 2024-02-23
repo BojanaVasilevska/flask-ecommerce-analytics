@@ -91,3 +91,7 @@ def test_user_spending_records(client):
     }
     assert response.json == expected_response
 
+def test_github_user_data(client):
+    response = client.get('/github_user_data')
+    assert response.status_code == 404
+    assert b"Failed to fetch GitHub user data." in response.data
