@@ -24,7 +24,6 @@ This repository contains a Flask application designed to analyze user data, spec
 ## Flask Application Structure:
 
 ```markdown
-Breadcrumbs
 
 flask-ecommerce-analytics/
 │
