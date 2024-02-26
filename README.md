@@ -21,6 +21,22 @@ This repository contains a Flask application designed to analyze user data, spec
    > :thumbsup: Validation Schema: jsonshcema
 
 
+## Flask Application Structure:
+
+```markdown
+Breadcrumbs
+
+flask-ecommerce-analytics/
+│
+└── server/
+    │  │
+    │  └── tests/
+    │        │
+    │        └── test_app.py
+    │
+    └── app.py
+
+```
 
 ## Installation:
 
