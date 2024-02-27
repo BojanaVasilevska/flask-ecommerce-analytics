@@ -12,12 +12,10 @@ import EmailIcon from "@mui/icons-material/Email";
 import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import TrafficIcon from "@mui/icons-material/Traffic";
+import { ResponsiveBar } from "@nivo/bar";
 import Header from "../../components/Header";
-// import LineChart from "../../components/LineChart";
-// import BarChart from "../../components/BarChart";
 import StatBox from "../../components/StatBox";
-import { useState } from "react";
-// import ProgressCircle from "../../components/ProgressCircle";
+import { useState, useEffect } from "react";
 
 const Dashboard = () => {
   const theme = useTheme();
@@ -25,6 +23,9 @@ const Dashboard = () => {
   const [userInfo, setUserInfo] = useState(null);
   const [userId, setUserId] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [averageSpendingByAgeRange, setAverageSpendingByAgeRange] = useState(
+    []
+  );
 
   const handleUserIdChange = (e) => {
     setUserId(e.target.value);
@@ -52,6 +53,34 @@ const Dashboard = () => {
         setIsLoading(false);
       });
   };
+
+  const fetchAverageSpendingByAgeRange = () => {
+    fetch(`http://127.0.0.1:5000/average_spending_by_age_range`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Average spending by age range data fetched:", data);
+        const formattedData = Object.entries(
+          data.average_spending_by_age_range
+        ).map(([ageRange, value]) => ({
+          id: ageRange,
+          value: value,
+        }));
+        console.log("Formatted data:", formattedData);
+        setAverageSpendingByAgeRange(formattedData);
+      })
+      .catch((error) => {
+        console.error("There was a problem fetching the data:", error);
+      });
+  };
+
+  useEffect(() => {
+    fetchAverageSpendingByAgeRange();
+  }, []);
 
   return (
     <Box m="20px">
@@ -219,9 +248,7 @@ const Dashboard = () => {
               Recent Transactions
             </Typography>
           </Box>
-          {/* {mockTransactions.map((transaction, i) => ( */}
           <Box
-            // key={`${transaction.txId}-${i}`}
             display="flex"
             justifyContent="space-between"
             alignItems="center"
@@ -233,23 +260,16 @@ const Dashboard = () => {
                 color={colors.orangeAmber[500]}
                 variant="h5"
                 fontWeight="600"
-              >
-                {/* {transaction.txId} */}
-              </Typography>
-              <Typography color={colors.grey[100]}>
-                {/* {transaction.user} */}
-              </Typography>
+              ></Typography>
+              <Typography color={colors.grey[100]}></Typography>
             </Box>
             <Box color={colors.grey[100]}>date</Box>
             <Box
               backgroundColor={colors.orangeAmber[500]}
               p="5px 10px"
               borderRadius="4px"
-            >
-              {/* ${transaction.cost} */}
-            </Box>
+            ></Box>
           </Box>
-          {/* ))} */}
         </Box>
 
         {/* ROW 3 */}
@@ -270,7 +290,11 @@ const Dashboard = () => {
             >
               User Information:
             </Typography>
-            <Input value={userId} onChange={handleUserIdChange} />
+            <Input
+              placeholder="Enter User ID"
+              value={userId}
+              onChange={handleUserIdChange}
+            />
             <Typography variant="h5">
               Name: {isLoading ? "Loading..." : userInfo?.user_name || "N/A"}
             </Typography>
@@ -281,7 +305,14 @@ const Dashboard = () => {
               Total Spending:{" "}
               {isLoading ? "Loading..." : userInfo?.total_spending || "N/A"}
             </Typography>
-            <Button onClick={handleSubmit} disabled={isLoading}>
+            <Button
+              sx={{
+                backgroundColor: colors.blueAccent[700],
+                color: colors.grey[100],
+              }}
+              onClick={handleSubmit}
+              disabled={isLoading}
+            >
               {isLoading ? "Loading..." : "Submit"}
             </Button>
           </Box>
@@ -296,10 +327,30 @@ const Dashboard = () => {
             fontWeight="600"
             sx={{ padding: "30px 30px 0 30px" }}
           >
-            Sales Quantity
+            Average Spending By Age
           </Typography>
-          <Box height="250px" mt="-20px">
-            {/* <BarChart isDashboard={true} /> */}
+          <Box height="200px" width="450px" mt="30px" ml="35px">
+            <ResponsiveBar
+              labelTextColor={colors.blueAccent[500]}
+              data={averageSpendingByAgeRange}
+              isDashboard={true}
+              colors={{ scheme: "nivo" }}
+              tooltip={(tooltip) => (
+                <div
+                  style={{
+                    backgroundColor: "#3e4396",
+                    border: "1px solid #3e4396",
+                    borderRadius: "4px",
+                    padding: "8px",
+                    color: "#e0e0e0",
+                    fontSize: "14px",
+                    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+                  }}
+                >
+                  <strong>{tooltip.data.id}</strong>: {tooltip.data.value}
+                </div>
+              )}
+            />
           </Box>
         </Box>
       </Box>
