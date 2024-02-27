@@ -16,7 +16,7 @@ import Header from "../../components/Header";
 // import LineChart from "../../components/LineChart";
 // import BarChart from "../../components/BarChart";
 import StatBox from "../../components/StatBox";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 // import ProgressCircle from "../../components/ProgressCircle";
 
 const Dashboard = () => {

@@ -84,6 +84,7 @@ def average_spending_by_age_range():
                 total_spending_in_range += user_spending_entry.money_spent
 
         average_spending = total_spending_in_range / total_users_in_range if total_users_in_range > 0 else 0
+        average_spending = round(average_spending, 2)
         average_spending_by_age_range[range_name] = average_spending
 
     for range_name, average_spending in average_spending_by_age_range.items():
