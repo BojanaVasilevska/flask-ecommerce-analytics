@@ -115,6 +115,16 @@ $ pip install pytest-flask
 $ pip install jsonschema
 ```
 
+## Frontend - Client - React.js app:
+
+### In client directory - run command: 
+
+```markdown
+$ npm install
+
+$ npm start
+```
+
 <br />
 <br />
 
