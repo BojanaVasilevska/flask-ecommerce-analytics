@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import {
   Box,
   Button,
@@ -5,6 +6,7 @@ import {
   Input,
   Typography,
   useTheme,
+  Paper,
 } from "@mui/material";
 import { tokens } from "../../theme";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
@@ -15,20 +17,75 @@ import TrafficIcon from "@mui/icons-material/Traffic";
 import { ResponsiveBar } from "@nivo/bar";
 import Header from "../../components/Header";
 import StatBox from "../../components/StatBox";
-import { useState, useEffect } from "react";
 
 const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
   const [userInfo, setUserInfo] = useState(null);
   const [userId, setUserId] = useState("");
+  const [userInsertId, setInsertUserId] = useState(0);
+  const [moneySpent, setMoneySpent] = useState(0);
+  const [year, setYear] = useState(0);
+  const [isLoadingInsert, setIsLoadingInsert] = useState(false);
+  const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [averageSpendingByAgeRange, setAverageSpendingByAgeRange] = useState(
     []
   );
+  const [items, setItems] = useState([]);
+  const [userData, setUserData] = useState(null);
 
   const handleUserIdChange = (e) => {
     setUserId(e.target.value);
+  };
+
+  const handleInsertUserIdChange = (e) => {
+    setInsertUserId(parseInt(e.target.value, 10));
+  };
+
+  const handleMoneySpentChange = (e) => {
+    setMoneySpent(parseFloat(e.target.value));
+  };
+
+  const handleYearChange = (e) => {
+    setYear(parseInt(e.target.value, 10));
+  };
+
+  // Function to handle submit button click
+  const handleInsertUserSubmit = () => {
+    setIsLoadingInsert(true);
+    setError(null);
+
+    const userData = {
+      user_id: userInsertId,
+      money_spent: moneySpent,
+      year: year,
+    };
+
+    fetch("http://localhost:5000/write_to_mongodb", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userData),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to submit data. Please try again.");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Data sent successfully:", data);
+      })
+      .catch((error) => {
+        console.error("Error submitting data:", error);
+        setError("Failed to submit data. Please try again.");
+      })
+      .finally(() => {
+        setIsLoadingInsert(false);
+      });
   };
 
   const handleSubmit = () => {
@@ -80,6 +137,41 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchAverageSpendingByAgeRange();
+  }, []);
+
+  useEffect(() => {
+    fetch("http://127.0.0.1:5000/user_spending_records")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("User spending records fetched:", data);
+        setItems(data.user_spending_records);
+      })
+      .catch((error) => {
+        console.error("There was a problem fetching the data:", error);
+      });
+  }, []);
+
+  useEffect(() => {
+    // Fetch user data
+    fetch("http://127.0.0.1:5000/github_user_data")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("User data fetched:", data);
+        setUserData(data); // Update state with fetched data
+      })
+      .catch((error) => {
+        console.error("Error fetching user data:", error);
+      });
   }, []);
 
   return (
@@ -191,12 +283,12 @@ const Dashboard = () => {
 
         {/* ROW 2 */}
         <Box
-          gridColumn="span 8"
+          gridColumn="span 6"
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
         >
           <Box
-            mt="25px"
+            mt="5px"
             p="0 30px"
             display="flex "
             justifyContent="space-between"
@@ -208,14 +300,7 @@ const Dashboard = () => {
                 fontWeight="600"
                 color={colors.grey[100]}
               >
-                Revenue Generated
-              </Typography>
-              <Typography
-                variant="h3"
-                fontWeight="bold"
-                color={colors.orangeAmber[500]}
-              >
-                $59,342.32
+                Insert User
               </Typography>
             </Box>
             <Box>
@@ -226,12 +311,93 @@ const Dashboard = () => {
               </IconButton>
             </Box>
           </Box>
-          {/* <Box height="250px" m="-20px 0 0 0">
-            <LineChart isDashboard={true} />
-          </Box> */}
+          <Box
+            mt="5px"
+            p="0 30px"
+            display="flex "
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Box
+              gridColumn="span 6"
+              gridRow="span 2"
+              backgroundColor={colors.primary[400]}
+            >
+              <Box>
+                <Typography sx={{ color: colors.orangeAmber[500] }}>
+                  Enter User ID
+                </Typography>
+                <Input
+                  placeholder="Enter User ID"
+                  value={userInsertId}
+                  onChange={handleInsertUserIdChange}
+                />
+              </Box>
+              <Box>
+                <Typography sx={{ color: colors.orangeAmber[500] }}>
+                  Enter Money Spent
+                </Typography>
+                <Input
+                  placeholder="Enter Money Spent"
+                  value={moneySpent}
+                  onChange={handleMoneySpentChange}
+                />
+              </Box>
+              <Box>
+                <Typography sx={{ color: colors.orangeAmber[500] }}>
+                  Insert Current Year
+                </Typography>
+                <Input
+                  placeholder="Enter Year"
+                  value={year}
+                  onChange={handleYearChange}
+                />
+              </Box>
+              <Button
+                sx={{
+                  backgroundColor: colors.blueAccent[700],
+                  color: colors.grey[100],
+                  marginTop: "10px",
+                }}
+                onClick={handleInsertUserSubmit}
+                disabled={isLoadingInsert}
+              >
+                {isLoadingInsert ? "Submitting..." : "Submit"}
+              </Button>
+              {error && <p style={{ color: "red" }}>{error}</p>}
+            </Box>
+            <Box
+              gridColumn="span 12"
+              gridRow="span 2"
+              backgroundColor={colors.orangeAmber[600]}
+              style={{ overflowY: "auto" }}
+              sx={{ maxHeight: "210px", width: "400px", borderRadius: "4px" }}
+            >
+              {items.map((item, index) => (
+                <Paper
+                  key={index}
+                  elevation={3}
+                  style={{
+                    padding: "10px",
+                    marginBottom: "10px",
+                    backgroundColor: colors.blueAccent[700],
+                    margin: "10px",
+                  }}
+                >
+                  <Typography variant="body2">
+                    Money Spent: {item.money_spent}
+                  </Typography>
+                  <Typography variant="body2">
+                    User ID: {item.user_id}
+                  </Typography>
+                  <Typography variant="body2">Year: {item.year}</Typography>
+                </Paper>
+              ))}
+            </Box>
+          </Box>
         </Box>
         <Box
-          gridColumn="span 4"
+          gridColumn="span 6"
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
           overflow="auto"
@@ -245,36 +411,105 @@ const Dashboard = () => {
             p="15px"
           >
             <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
-              Recent Transactions
+              GitHub User Data
             </Typography>
           </Box>
           <Box
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-            borderBottom={`4px solid ${colors.primary[500]}`}
-            p="15px"
+            gridColumn="span 12"
+            gridRow="span 2"
+            backgroundColor={colors.orangeAmber[600]}
+            style={{
+              overflowY: "auto",
+              maxHeight: "210px",
+              width: "750px",
+              borderRadius: "4px",
+              margin: "20px",
+            }}
           >
-            <Box>
-              <Typography
-                color={colors.orangeAmber[500]}
-                variant="h5"
-                fontWeight="600"
-              ></Typography>
-              <Typography color={colors.grey[100]}></Typography>
+            <Box mt="20px" ml="10px" mr="10px">
+              {userData && userData.github_user_data ? (
+                <Box>
+                  <Typography>
+                    <strong>Bio:</strong> {userData.github_user_data.bio}
+                  </Typography>
+                  <Typography>
+                    <strong>Blog:</strong> {userData.github_user_data.blog}
+                  </Typography>
+                  <Typography>
+                    <strong>Collaborators:</strong>{" "}
+                    {userData.github_user_data.collaborators}
+                  </Typography>
+                  <Typography>
+                    <strong>Company:</strong>{" "}
+                    {userData.github_user_data.company}
+                  </Typography>
+                  <Typography>
+                    <strong>Created At:</strong>{" "}
+                    {userData.github_user_data.created_at}
+                  </Typography>
+                  <Typography>
+                    <strong>Disk Usage:</strong>{" "}
+                    {userData.github_user_data.disk_usage}
+                  </Typography>
+                  <Typography>
+                    <strong>Email:</strong> {userData.github_user_data.email}
+                  </Typography>
+                  <Typography>
+                    <strong>Followers:</strong>{" "}
+                    {userData.github_user_data.followers}
+                  </Typography>
+                  <Typography>
+                    <strong>Following:</strong>{" "}
+                    {userData.github_user_data.following}
+                  </Typography>
+                  <Typography>
+                    <strong>Hireable:</strong>{" "}
+                    {userData.github_user_data.hireable}
+                  </Typography>
+                  <Typography>
+                    <strong>Location:</strong>{" "}
+                    {userData.github_user_data.location}
+                  </Typography>
+                  <Typography>
+                    <strong>Login:</strong> {userData.github_user_data.login}
+                  </Typography>
+                  <Typography>
+                    <strong>Name:</strong> {userData.github_user_data.name}
+                  </Typography>
+                  <Typography>
+                    <strong>Owned Private Repos:</strong>{" "}
+                    {userData.github_user_data.owned_private_repos}
+                  </Typography>
+                  <Typography>
+                    <strong>Private Gists:</strong>{" "}
+                    {userData.github_user_data.private_gists}
+                  </Typography>
+                  <Typography>
+                    <strong>Public Gists:</strong>{" "}
+                    {userData.github_user_data.public_gists}
+                  </Typography>
+                  <Typography>
+                    <strong>Public Repos:</strong>{" "}
+                    {userData.github_user_data.public_repos}
+                  </Typography>
+                  <Typography>
+                    <strong>Type:</strong> {userData.github_user_data.type}
+                  </Typography>
+                  <Typography>
+                    <strong>Updated At:</strong>{" "}
+                    {userData.github_user_data.updated_at}
+                  </Typography>
+                </Box>
+              ) : (
+                <Typography>No GitHub user data available.</Typography>
+              )}
             </Box>
-            <Box color={colors.grey[100]}>date</Box>
-            <Box
-              backgroundColor={colors.orangeAmber[500]}
-              p="5px 10px"
-              borderRadius="4px"
-            ></Box>
           </Box>
         </Box>
 
         {/* ROW 3 */}
         <Box
-          gridColumn="span 4"
+          gridColumn="span 6"
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
           p="30px"
@@ -295,11 +530,12 @@ const Dashboard = () => {
               value={userId}
               onChange={handleUserIdChange}
             />
-            <Typography variant="h5">
+            <Typography variant="h5" mt="15px">
               Name: {isLoading ? "Loading..." : userInfo?.user_name || "N/A"}
             </Typography>
             <Typography
               variant="h5"
+              mt="10px"
               sx={{ fontSize: "22px", color: colors.orangeAmber[400] }}
             >
               Total Spending:{" "}
@@ -309,6 +545,7 @@ const Dashboard = () => {
               sx={{
                 backgroundColor: colors.blueAccent[700],
                 color: colors.grey[100],
+                marginTop: "15px",
               }}
               onClick={handleSubmit}
               disabled={isLoading}
@@ -318,7 +555,7 @@ const Dashboard = () => {
           </Box>
         </Box>
         <Box
-          gridColumn="span 4"
+          gridColumn="span 6"
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
         >
@@ -329,7 +566,7 @@ const Dashboard = () => {
           >
             Average Spending By Age
           </Typography>
-          <Box height="200px" width="450px" mt="30px" ml="35px">
+          <Box height="200px" width="600px" mt="30px" ml="60px">
             <ResponsiveBar
               labelTextColor={colors.blueAccent[500]}
               data={averageSpendingByAgeRange}
