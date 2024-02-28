@@ -100,6 +100,8 @@ const Dashboard = () => {
       .then((data) => {
         console.log("User data fetched:", data);
         sessionStorage.setItem("userName", data.user_name);
+        sessionStorage.setItem("userEmail", data.user_email);
+        sessionStorage.setItem("userAge", data.user_age);
         sessionStorage.setItem("totalSpending", data.total_spending);
         setUserInfo(data);
       })
@@ -513,47 +515,64 @@ const Dashboard = () => {
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
           p="30px"
+          display="flex"
+          justifyContent="space-between"
         >
-          <Typography variant="h5" fontWeight="600">
-            Total Spending
-          </Typography>
+          <Box>
+            <Typography variant="h5" fontWeight="600">
+              Total Spending
+            </Typography>
 
-          <Box mt="20px">
+            <Box mt="20px">
+              <Input
+                placeholder="Enter User ID"
+                value={userId}
+                onChange={handleUserIdChange}
+                mb="15px"
+              />
+              <Box>
+                <Button
+                  sx={{
+                    backgroundColor: colors.blueAccent[700],
+                    color: colors.grey[100],
+                    mt: "15px",
+                  }}
+                  onClick={handleSubmit}
+                  disabled={isLoading}
+                >
+                  {isLoading ? "Loading..." : "Submit"}
+                </Button>
+              </Box>
+            </Box>
+          </Box>
+
+          <Box mr="30px">
             <Typography
               variant="h4"
               sx={{ fontSize: "26px", color: colors.orangeAmber[500] }}
             >
               User Information:
             </Typography>
-            <Input
-              placeholder="Enter User ID"
-              value={userId}
-              onChange={handleUserIdChange}
-            />
-            <Typography variant="h5" mt="15px">
+            <Typography variant="h5" mt="20px">
               Name: {isLoading ? "Loading..." : userInfo?.user_name || "N/A"}
+            </Typography>
+            <Typography variant="h5" mt="15px">
+              Email: {isLoading ? "Loading..." : userInfo?.user_email || "N/A"}
+            </Typography>
+            <Typography variant="h5" mt="15px">
+              Age: {isLoading ? "Loading..." : userInfo?.user_age || "N/A"}
             </Typography>
             <Typography
               variant="h5"
-              mt="10px"
+              mt="20px"
               sx={{ fontSize: "22px", color: colors.orangeAmber[400] }}
             >
               Total Spending:{" "}
               {isLoading ? "Loading..." : userInfo?.total_spending || "N/A"}
             </Typography>
-            <Button
-              sx={{
-                backgroundColor: colors.blueAccent[700],
-                color: colors.grey[100],
-                marginTop: "15px",
-              }}
-              onClick={handleSubmit}
-              disabled={isLoading}
-            >
-              {isLoading ? "Loading..." : "Submit"}
-            </Button>
           </Box>
         </Box>
+
         <Box
           gridColumn="span 6"
           gridRow="span 2"
