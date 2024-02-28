@@ -51,14 +51,15 @@ def average_spending_by_age(user_id):
     if not user_info:
         return jsonify({'message': 'User not found.'}), 404
 
+    user_id = user_info.user_id
     user_name = user_info.name
+    user_email = user_info.email
+    user_age = user_info.age
 
     user_spending = UserSpending.query.filter_by(user_id=user_id).all()
     total_spending = sum(entry.money_spent for entry in user_spending)
 
-    return jsonify({'user_id': user_id, 'user_name': user_name, 'total_spending': total_spending})
-
-
+    return jsonify({'user_id': user_id, 'user_name': user_name, 'user_email': user_email, 'user_age': user_age, 'total_spending': total_spending})
 
 @app.route('/average_spending_by_age_range', methods=['GET'])
 def average_spending_by_age_range():
