@@ -6,7 +6,7 @@
 
 This repository contains a Flask application designed to analyze user data, specifically focusing on orders and payments within an e-commerce platform.
 
-**Integration** with Flask-SQLalchemy, Flask-PyMongo, Flask-Requests, jsonschema and pytest.
+**Integration** with Flask-SQLalchemy, Flask-Cors, Flask-PyMongo, Flask-Requests, jsonschema and pytest.
 
 ## Extension:
 
@@ -19,6 +19,8 @@ This repository contains a Flask application designed to analyze user data, spec
    > :incoming_envelope: HTTP request: Flask-Requests 
 
    > :thumbsup: Validation Schema: jsonshcema
+   
+   > 🔁  Cross Origin Resource Sharing: Flask-Cors
 
 
 ## Flask Application Structure:
@@ -26,6 +28,8 @@ This repository contains a Flask application designed to analyze user data, spec
 ```markdown
 
 flask-ecommerce-analytics/
+│              │
+│              └── client/ - React.js App   
 │
 └── server/
     │  │
@@ -85,6 +89,10 @@ $ py -m pip install --upgrade pip
 
 ```markdown
 $ pip install Flask
+```
+
+```markdown
+$ pip install Flask-Cors
 ```
 
 ```markdown
