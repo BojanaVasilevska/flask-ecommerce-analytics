@@ -52,7 +52,6 @@ const Dashboard = () => {
     setYear(parseInt(e.target.value, 10));
   };
 
-  // Function to handle submit button click
   const handleInsertUserSubmit = () => {
     setIsLoadingInsert(true);
     setError(null);
@@ -169,7 +168,7 @@ const Dashboard = () => {
       })
       .then((data) => {
         console.log("User data fetched:", data);
-        setUserData(data); // Update state with fetched data
+        setUserData(data);
       })
       .catch((error) => {
         console.error("Error fetching user data:", error);
@@ -585,7 +584,7 @@ const Dashboard = () => {
           >
             Average Spending By Age
           </Typography>
-          <Box height="200px" width="600px" mt="30px" ml="60px">
+          <Box height="200px" width="670px" mt="30px" ml="60px">
             <ResponsiveBar
               labelTextColor={colors.blueAccent[500]}
               data={averageSpendingByAgeRange}
